@@ -1,4 +1,4 @@
-# Récupérer les infos du site
+# Get Infos from MAL or Nautiljon
 
 python .\combined_script.py -o anime_infos.json --no-headless "Yu-Gi-Oh! Card Game The Chronicles"
 python .\fill_form_combined.py anime_infos.json 
