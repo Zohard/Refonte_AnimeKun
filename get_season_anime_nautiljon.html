@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Title Extractor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1rem;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            background: #fafafa;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        .results h2 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .title-list {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .title-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e6ff;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+        
+        .title-item:last-child {
+            border-bottom: none;
+        }
+        
+        .title-item:hover {
+            background-color: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            margin: 0 -10px;
+            padding-left: 22px;
+            padding-right: 22px;
+        }
+        
+        .title-number {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .title-text {
+            flex: 1;
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .title-english {
+            font-style: italic;
+            color: #666;
+            font-size: 0.95rem;
+            margin-left: 10px;
+        }
+        
+        .stats {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 12px;
+        }
+        
+        .stats strong {
+            font-size: 1.2rem;
+            color: #667eea;
+        }
+        
+        .copy-button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+        
+        .copy-button:hover {
+            box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+        }
+        
+        .example {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .example h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .example code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎌 Anime Title Extractor</h1>
+        
+        <div class="example">
+            <h3>📋 How to use:</h3>
+            <p>1. Go to the Nautiljon page and copy the HTML source code</p>
+            <p>2. Paste it in the text area below</p>
+            <p>3. Click "Extract Titles" to get all anime titles</p>
+            <p><strong>Note:</strong> This tool looks for titles in <code>&lt;h2&gt;</code> tags within <code>.title</code> divs and their English translations in <code>&lt;p class="infos_small"&gt;</code> tags.</p>
+        </div>
+        
+        <div class="input-section">
+            <label for="htmlInput">Paste the HTML content from Nautiljon:</label>
+            <textarea id="htmlInput" placeholder="Paste the HTML content here..."></textarea>
+        </div>
+        
+        <div class="button-container">
+            <button onclick="extractTitles()">🔍 Extract Titles</button>
+        </div>
+        
+        <div class="results" id="results" style="display: none;">
+            <h2>📺 Extracted Anime Titles</h2>
+            <div class="title-list" id="titleList"></div>
+            <div class="stats" id="stats"></div>
+            <div class="button-container">
+                <button class="copy-button" onclick="copyTitles()">📋 Copy All Titles</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let extractedTitles = [];
+        
+function extractTitles() {
+            const htmlInput = document.getElementById('htmlInput').value;
+            
+            if (!htmlInput.trim()) {
+                alert('Please paste some HTML content first!');
+                return;
+            }
+            
+            // Create a temporary DOM element to parse the HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlInput;
+            
+            const titles = [];
+            
+            // Find the section separator that indicates ongoing series
+            const ongoingSectionTitle = tempDiv.querySelector('#saison_continue_titre');
+            let ongoingSectionStart = null;
+            
+            if (ongoingSectionTitle) {
+                // Find the parent container or next sibling that contains ongoing anime
+                ongoingSectionStart = ongoingSectionTitle.nextElementSibling;
+                if (ongoingSectionStart && ongoingSectionStart.id === 'saison_continue') {
+                    // Remove the ongoing section from our search
+                    ongoingSectionStart.remove();
+                }
+            }
+            
+            // Look for elements with class "elt" (anime entries) - now excluding ongoing series
+            const animeElements = tempDiv.querySelectorAll('.elt');
+            
+            animeElements.forEach((element, index) => {
+                // Extract Japanese title from h2 > a
+                const h2Element = element.querySelector('.title h2 a');
+                let japaneseTitle = h2Element ? h2Element.textContent.trim() : '';
+                
+                // Remove anything in parentheses from the main title
+                japaneseTitle = japaneseTitle.replace(/\s*\([^)]*\)/g, '').trim();
+                
+                // Skip English title extraction - we only want the clean Japanese title
+                
+                if (japaneseTitle) {
+                    titles.push({
+                        japanese: japaneseTitle,
+                        english: '', // Don't include English titles
+                        index: index + 1
+                    });
+                }
+            });
+            
+            // If no .elt elements found, try alternative selectors
+            if (titles.length === 0) {
+                // Look for any h2 > a elements that might contain titles
+                const h2Links = tempDiv.querySelectorAll('h2 a');
+                h2Links.forEach((link, index) => {
+                    let title = link.textContent.trim();
+                    // Remove anything in parentheses
+                    title = title.replace(/\s*\([^)]*\)/g, '').trim();
+                    
+                    if (title && title.length > 0) {
+                        titles.push({
+                            japanese: title,
+                            english: '',
+                            index: index + 1
+                        });
+                    }
+                });
+            }
+            
+            extractedTitles = titles;
+            displayTitles(titles);
+        }
+        
+        function displayTitles(titles) {
+            const resultsDiv = document.getElementById('results');
+            const titleListDiv = document.getElementById('titleList');
+            const statsDiv = document.getElementById('stats');
+            
+            if (titles.length === 0) {
+                titleListDiv.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">No anime titles found. Please check your HTML content.</p>';
+                statsDiv.innerHTML = '<strong>0</strong> titles found';
+            } else {
+                let html = '';
+                titles.forEach(title => {
+                    html += `
+                        <div class="title-item">
+                            <div class="title-number">${title.index}</div>
+                            <div class="title-text">
+                                ${title.japanese}
+                                ${title.english ? `<span class="title-english">(${title.english})</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                titleListDiv.innerHTML = html;
+                statsDiv.innerHTML = `<strong>${titles.length}</strong> anime titles extracted successfully! 🎉`;
+            }
+            
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyTitles() {
+            if (extractedTitles.length === 0) {
+                alert('No titles to copy!');
+                return;
+            }
+            
+            let textToCopy = 'Anime Titles (Summer 2025):\n\n';
+            extractedTitles.forEach((title, index) => {
+                textToCopy += `${index + 1}. ${title.japanese}`;
+                if (title.english) {
+                    textToCopy += ` (${title.english})`;
+                }
+                textToCopy += '\n';
+            });
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                button.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for browsers that don't support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                alert('Titles copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
